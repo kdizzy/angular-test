@@ -23,8 +23,8 @@ if (!params.REGISTRY_LOCATION) {
 
 // Variables required for this job
 def registry_location = params.REGISTRY_LOCATION
-def image_name = "mcs/portal-frontend"
-def build_slave_image_name = "mcs/jnlp-slave-nodejs"
+def image_name = "portal-frontend"
+def build_slave_image_name = "jnlp-slave-nodejs"
 def jenkins_slave_image_name = "${registry_location}/${build_slave_image_name}:latest" 
 def service_creds_location = "/etc/gcr-service-acct"
 def service_creds_file = "service-acct-creds.json"
@@ -34,11 +34,6 @@ def kube_deployment = "portal"
 def slack_notify_on_success = true
 def label = "buildpod"
 def debug_sleep = params.DEBUG_SLEEP
-
-echo "Building with the following configuration:"
-echo "\tRegistry: ${params.REGISTRY_LOCATION}\n\tDocker Sock: ${params.HOST_DOCKER_SOCK}\n\tDocker Binary: ${params.HOST_DOCKER_BIN}\n\tKubectl Binary: ${params.HOST_KUBECTL_BIN}"
-echo "and using JNLP slave container:"
-echo "\t${jenkins_slave_image_name}"
 
 // Create a Kubernetes Pod Template and run the job steps within the pod
 podTemplate(
