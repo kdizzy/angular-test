@@ -29,6 +29,19 @@ http://localhost
 
 This should load angular index.html page with list of views.
 
+## CICD
+For CICD, I have adopted Jenkins and Kubernetes. I have also used Google container registry for images.
+Every time a job is run, it will create a pod in K8 cluster as jenins slave and perform the tasks within.
+
+
+Setup a pipeline in jenins with webhook to github repo. For every commit in master branch, Jenkins file will get executed and perform following tasks
+
+1) Check-out code from git
+2) build docker image
+3) publish docker image to google resgistry with proper tagging
+4) deploy newly built image to K8 containers
+
+
 
 ## Caveats
 
