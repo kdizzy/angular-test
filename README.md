@@ -1,31 +1,39 @@
-# MyAngularProject
+# Angular Docker build
 
-This project was generated with [angular-cli](https://github.com/angular/angular-cli) version 1.0.0-beta.28.3.
+This project demonstrate the simplistic approach in deploying angular project into docker container. 
 
-## Development server
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Docker deployment
+Docker builds the image in multi stage.
 
-## Code scaffolding
+Stage 1: Using node image, install pre-requisites (npm), build the source code
+Stage 2: Using nginx image, only use built files from State 1 for deployment release.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive/pipe/service/class/module`.
+Using multi stage build keeps the dockerfile simple since it has all every stage in a single file. It also reduces the size of resultant image by only using the required/dependent files from previous stage image.
 
-## Build
+It doesn't necessarily require to build the entire Dockerfile including every stage. You can specify a target build stage. 
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Running unit tests
+## How to build
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+docker build -t angular-test:v1
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-Before running the tests make sure you are serving the app via `ng serve`.
+## How to test image is working
 
-## Deploying to GitHub Pages
+docker run -p 80:80 angular-test:v1
 
-Run `ng github-pages:deploy` to deploy to GitHub Pages.
+This should start up docker container with nginx running with angular files as the source.
 
-## Further help
+Open browser and load url
+http://localhost
 
-To get more help on the `angular-cli` use `ng help` or go check out the [Angular-CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+This should load angular index.html page with list of views.
+
+
+## Caveats
+
+I have few issues deploying angular-seed project direct of github. I was running into all sort of @angular/cli and typescript versions incompatibility issues.
+
+So I had to tweak the project a little bit to make it work with docker. 
+
+
